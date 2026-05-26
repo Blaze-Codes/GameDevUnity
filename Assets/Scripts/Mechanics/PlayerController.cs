@@ -41,7 +41,7 @@ namespace Platformer.Mechanics
         internal Animator animator;
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
-        private PlayerInput playerInput;
+        public InputActionAsset inputActions;
         private InputAction m_MoveAction;
         private InputAction m_JumpAction;
 
@@ -54,10 +54,19 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
-            playerInput = GetComponent<PlayerInput>();
 
-            m_MoveAction = playerInput.actions["Move"];
-            m_JumpAction = playerInput.actions["Jump"];
+            inputActions = Instantiate(inputActions);
+            m_MoveAction = inputActions.FindAction("Player/Move");
+            m_JumpAction = inputActions.FindAction("Player/Jump");
+            m_MoveAction.Enable();
+            m_JumpAction.Enable();
+        }
+
+        void OnDestroy()
+        {
+            m_MoveAction.Disable();
+            m_JumpAction.Disable();
+            Destroy(inputActions);
         }
 
         protected override void Update()

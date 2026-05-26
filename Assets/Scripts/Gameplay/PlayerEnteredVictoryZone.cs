@@ -12,13 +12,12 @@ namespace Platformer.Gameplay
     public class PlayerEnteredVictoryZone : Simulation.Event<PlayerEnteredVictoryZone>
     {
         public VictoryZone victoryZone;
-
-        PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        public PlayerController player;
 
         public override void Execute()
         {
-            model.player.animator.SetTrigger("victory");
-            model.player.controlEnabled = false;
+            player.animator.SetTrigger("victory");
+            player.controlEnabled = false;
         }
     }
 }
