@@ -45,6 +45,10 @@ namespace Platformer.Mechanics
         private InputAction m_MoveAction;
         private InputAction m_JumpAction;
 
+        public bool useExternalInput;
+        public float externalMoveX;
+        public bool externalJump;
+
         public Bounds Bounds => collider2d.bounds;
 
         void Awake()
@@ -73,13 +77,23 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                move.x = m_MoveAction.ReadValue<Vector2>().x;
-                if (jumpState == JumpState.Grounded && m_JumpAction.WasPressedThisFrame())
-                    jumpState = JumpState.PrepareToJump;
-                else if (m_JumpAction.WasReleasedThisFrame())
+                if (useExternalInput)
                 {
-                    stopJump = true;
-                    Schedule<PlayerStopJump>().player = this;
+                    move.x = externalMoveX;
+                    if (jumpState == JumpState.Grounded && externalJump)
+                        jumpState = JumpState.PrepareToJump;
+                    externalJump = false;
+                }
+                else
+                {
+                    move.x = m_MoveAction.ReadValue<Vector2>().x;
+                    if (jumpState == JumpState.Grounded && m_JumpAction.WasPressedThisFrame())
+                        jumpState = JumpState.PrepareToJump;
+                    else if (m_JumpAction.WasReleasedThisFrame())
+                    {
+                        stopJump = true;
+                        Schedule<PlayerStopJump>().player = this;
+                    }
                 }
             }
             else
