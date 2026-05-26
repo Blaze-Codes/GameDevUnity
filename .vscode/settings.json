@@ -67,6 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Platformer-Prototype.slnx",
+    "dotnet.defaultSolution": "MakeOurPrototypeGreatAgain.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }
